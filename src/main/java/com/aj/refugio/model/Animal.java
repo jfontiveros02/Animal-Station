@@ -1,16 +1,14 @@
 package com.aj.refugio.model;
 
-public class Animal {
+public abstract class Animal implements Exportable {
     //Variables principales
-
     private int id;
     private String nombre;
     private String especie;
     private int edad;
     private double peso;
-    private String tipo;
-
-//Constructor
+    private String tipo = "desconocido"; // Cambiar por doméstico o salvaje con el "setTipo()"
+    //Constructor
     public Animal(int id, String nombre, String especie, int edad, double peso) {
         this.id = id;
         this.nombre = nombre;
@@ -20,7 +18,7 @@ public class Animal {
 
     }
 
-//Metodos
+    //Metodos
     public int getId() {
         return this.id;
     }
@@ -41,11 +39,13 @@ public class Animal {
         return this.peso;
     }
 
+    // Cada subclase dirá si es Doméstico o Salvaje
     public String getTipo() {
         return this.tipo;
     }
 
-    public String toString() {
-        return null;
-    }
+
+    // Cada subclase decide cómo se muestra
+    @Override
+    public abstract String toString();
 }

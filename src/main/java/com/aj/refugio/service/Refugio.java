@@ -8,7 +8,7 @@ import com.aj.refugio.model.Persona;
 
 public class Refugio {
 
-    //Variables principales
+    // Variables principales
     String nombre;
 
     String direccion;
@@ -19,7 +19,7 @@ public class Refugio {
 
     ArrayList<Persona> adoptantes;
 
-    //Constructor
+    // Constructor completo
     public Refugio(String nombre, String direccion) {
 
         this.nombre = nombre;
@@ -28,34 +28,59 @@ public class Refugio {
         this.donaciones = new ArrayList<>();
         this.adoptantes = new ArrayList<>();
     }
+    // Metodos
 
-    //Metodos
-    public Animal agregarAnimal(Animal a) {
-        return null;
+    // Agregar un animal al refugio
+    public void agregarAnimal(Animal a) {
+        this.animales.add(a);
     }
 
+    // Eliminar un animal por su ID (si existe)
     public void eliminarAnimal(int id) {
+        this.animales.removeIf(animal -> animal.getId() == id);
 
     }
 
-    public void listarAnimales(ArrayList<Animal> animales) {
+    // Ver lista de animales en el refugio
+    public void listarAnimales() {
+        for (Animal animal : animales) {
+            System.out.println(animal);
+        }
 
     }
 
+    // Registrar una donación al refugio
     public void registrarDonacion(Donacion d) {
+        this.donaciones.add(d);
 
     }
 
-    public double calcularTotalDonaciones() {
-        return 0.0;
+    // Total donaciones
+    public double calcularTotalDonaciones(ArrayList<Double> donaciones) {
+        double total = 0.0;
+        for (Double donacion : donaciones) {
+            total += donacion;
+        }
+        return total;
     }
 
-    public Animal buscarAnimalPorID(int id) {
-        return null;
+        public Animal buscarAnimalPorID(int id) {
+            for (Animal animal : this.animales) {
+                if (animal.getId() == id) {
+                    return animal;
+                }
+            }
+            return null;
+        }
+    
+        // Listar animales por tipo (domésticos o salvajes)
+        public      void listarAnimalesPorTipo(ArrayList<Animal> animales) {
+            for (Animal animal : animales) {
+                System.out.println(animal.getTipo() + ": " + animal);
+            }
+        }
     }
 
-    public void listarAnimalesPorTipo(ArrayList<Animal> animales) {
+    
 
-    }
 
-}
