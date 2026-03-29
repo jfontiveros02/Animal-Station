@@ -56,13 +56,14 @@ public class Refugio {
     }
 
     // Total donaciones
-    public double calcularTotalDonaciones(ArrayList<Double> donaciones) {
-        double total = 0.0;
-        for (Double donacion : donaciones) {
-            total += donacion;
-        }
-        return total;
+   public double calcularTotalDonaciones() {
+    double total = 0.0;
+    for (Donacion donacion : donaciones) {
+        total += donacion.getTotalDonado();
     }
+    return total;
+}
+
 
         public Animal buscarAnimalPorID(int id) {
             for (Animal animal : this.animales) {
