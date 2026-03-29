@@ -15,7 +15,7 @@ public class AnimalDomestico extends Animal {
     // Constructor 
     //Añadimos adoptado, sociable y vacunado al constructor 
     public AnimalDomestico(int id, String nombre, String especie, int edad, double peso,
-                           boolean adoptado, boolean sociable, boolean vacunado) {
+            boolean adoptado, boolean sociable, boolean vacunado) {
 
         // Llamamos al constructor de la clase padre (Animal)
         super(id, nombre, especie, edad, peso);
@@ -34,14 +34,18 @@ public class AnimalDomestico extends Animal {
     // Representación en texto del animal doméstico
     @Override
     public String toString() {
-        return "ID: " + getId() +
-                " | Nombre: " + getNombre() +
-                " | Especie: " + getEspecie() +
-                " | Edad: " + getEdad() +
-                " | Peso: " + getPeso() +
-                " | Adoptado: " + (adoptado ? "Sí" : "No") +
-                " | Sociable: " + (sociable ? "Sí" : "No") +
-                " | Vacunado: " + (vacunado ? "Sí" : "No");
+        return "ID: " + getId()
+                + " | Nombre: " + getNombre()
+                + " | Especie: " + getEspecie()
+                + " | Edad: " + getEdad()
+                + " | Peso: " + getPeso()
+                + " | Adoptado: " + (adoptado ? "Sí" : "No")
+                + " | Sociable: " + (sociable ? "Sí" : "No")
+                + " | Vacunado: " + (vacunado ? "Sí" : "No");
+    }
+
+    public void setAdoptado(boolean adoptado) {
+        this.adoptado = adoptado;
     }
 
     public boolean isAdoptado() {
@@ -58,26 +62,26 @@ public class AnimalDomestico extends Animal {
 
     @Override
     public String toJSON() {
-        return "{\"id\":" + getId() +
-                ",\"nombre\":\"" + getNombre() + "\"" +
-                ",\"especie\":\"" + getEspecie() + "\"" +
-                ",\"edad\":" + getEdad() +
-                ",\"peso\":" + getPeso() +
-                ",\"adoptado\":" + adoptado +
-                ",\"sociable\":" + sociable +
-                ",\"vacunado\":" + vacunado +
-                "}";
+        return "{\"id\":" + getId()
+                + ",\"nombre\":\"" + getNombre() + "\""
+                + ",\"especie\":\"" + getEspecie() + "\""
+                + ",\"edad\":" + getEdad()
+                + ",\"peso\":" + getPeso()
+                + ",\"adoptado\":" + adoptado
+                + ",\"sociable\":" + sociable
+                + ",\"vacunado\":" + vacunado
+                + "}";
     }
 
     @Override
     public String toCSV() {
-        return getId() + "," +
-                getNombre() + "," +
-                getEspecie() + "," +
-                getEdad() + "," +
-                getPeso() + "," +
-                adoptado + "," +
-                sociable + "," +
-                vacunado;
+        return getId() + ","
+                + getNombre() + ","
+                + getEspecie() + ","
+                + getEdad() + ","
+                + getPeso() + ","
+                + adoptado + ","
+                + sociable + ","
+                + vacunado;
     }
 }
