@@ -15,7 +15,8 @@ public class App {
 
     static Scanner scanner = new Scanner(System.in);
     static Refugio refugio = new Refugio("Libertad", "Calle Desengaño 21");
-    static int nextId = 1; // ID para animales
+    // ID para animales
+    static int nextId = 1; 
 
     public static void main(String[] args) {
 
