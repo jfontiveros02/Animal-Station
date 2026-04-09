@@ -1,89 +1,286 @@
 package com.aj.refugio;
 
 import java.time.LocalDate;
+import java.util.Scanner;
 
 import com.aj.refugio.model.Adoptante;
+import com.aj.refugio.model.Animal;
 import com.aj.refugio.model.AnimalDomestico;
 import com.aj.refugio.model.AnimalSalvaje;
 import com.aj.refugio.model.Donacion;
-import com.aj.refugio.model.Persona;
+import com.aj.refugio.model.Empleado;
 import com.aj.refugio.service.Refugio;
 
 public class App {
 
+    static Scanner scanner = new Scanner(System.in);
+    static Refugio refugio = new Refugio("Libertad", "Calle Desengaño 21");
+    static int nextId = 1; // ID para animales
+
     public static void main(String[] args) {
-        Refugio refugio = new Refugio("Libertad", "Calle Desengaño 21");
 
-        // Crear algunos animales domésticos
-        AnimalDomestico perro = new AnimalDomestico(1, "Chanel", "Perro", 5, 20.5, false, true, true);
-        AnimalDomestico gato = new AnimalDomestico(2, "Shya", "Gato", 3, 4.2, false, true, true);
-        AnimalDomestico conejo = new AnimalDomestico(5, "Bunny", "Conejo", 2, 1.5, false, true, true);
-        // Crear algunos animales salvajes
-        AnimalSalvaje aguila = new AnimalSalvaje(3, "Piolín", "Águila", 8, 54.0,
-                "Bosque", true, true, false);
-        AnimalSalvaje zorro = new AnimalSalvaje(4, "Swiper", "Zorro", 10, 5000.0,
-                "", false, true, true);
+        int opcion;
+        do {
+            System.out.println("\n====== REFUGIO " + refugio.getNombre() + " ======");
+            System.out.println("1. Animales");
+            System.out.println("2. Adoptantes");
+            System.out.println("3. Donaciones");
+            System.out.println("4. Empleados");
+            System.out.println("5. Salir");
+            opcion = leerEntero("Opcion: ");
 
-        refugio.agregarAnimal(perro);
-        refugio.agregarAnimal(gato);
-        refugio.agregarAnimal(conejo);
-        refugio.agregarAnimal(aguila);
-        refugio.agregarAnimal(zorro);
+            switch (opcion) {
+                case 1 -> menuAnimales();
+                case 2 -> menuAdoptantes();
+                case 3 -> menuDonaciones();
+                case 4 -> menuEmpleados();
+                case 5 -> System.out.println("Hasta pronto!");
+                default -> System.out.println("Opcion no valida.");
+            }
 
-        //Creo una perona
-        Persona maria = new Persona("María López", "99887766C", "600-112233");
+        } while (opcion != 5);
 
-        // Crear un adoptante
-        Adoptante juan = new Adoptante("Juan Fontiveros", "12345678A", "555-1234");
-        Adoptante andrea = new Adoptante("Andrea Jiménez", "87654321B", "555-5678");
+        scanner.close();
+    }
 
-        // Juan adopta a Shya
-        juan.adoptarAnimal(gato);
-        // Andrea adopta a Chanel
-        andrea.adoptarAnimal(perro);
+    // ── ANIMALES
+    static void menuAnimales() {
+        int op;
+        do {
+            System.out.println("\n-- ANIMALES --");
+            System.out.println("1. Ver todos");
+            System.out.println("2. Buscar por ID");
+            System.out.println("3. Añadir animal domestico");
+            System.out.println("4. Añadir animal salvaje");
+            System.out.println("5. Eliminar animal");
+            System.out.println("0. Volver");
+            op = leerEntero("Opcion: ");
 
-         
+            switch (op) {
+                case 1 -> {
+                    if (refugio.animales.isEmpty()) {
+                        System.out.println("No hay animales registrados.");
+                    } else {
+                        refugio.listarAnimales();
+                    }
+                }
+                case 2 -> {
+                    int id = leerEntero("ID del animal: ");
+                    Animal a = refugio.buscarAnimalPorID(id);
+                    System.out.println(a != null ? a : "No encontrado.");
+                }
+                case 3 -> {
+                    System.out.println("-- Nuevo animal domestico --");
+                    String nombre = leerTexto("Nombre: ");
+                    String especie = leerTexto("Especie: ");
+                    int edad = leerEntero("Edad: ");
+                    double peso = leerDecimal("Peso (kg): ");
+                    boolean sociable = leerBooleano("¿Sociable? (s/n): ");
+                    boolean vacunado = leerBooleano("¿Vacunado? (s/n): ");
+                    refugio.agregarAnimal(new AnimalDomestico(nextId++, nombre, especie, edad, peso, false, sociable, vacunado));
+                    System.out.println("Animal añadido con ID " + (nextId - 1));
+                }
+                case 4 -> {
+                    System.out.println("-- Nuevo animal salvaje --");
+                    String nombre = leerTexto("Nombre: ");
+                    String especie = leerTexto("Especie: ");
+                    int edad = leerEntero("Edad: ");
+                    double peso = leerDecimal("Peso (kg): ");
+                    String habitat = leerTexto("Habitat de origen: ");
+                    boolean peligroso = leerBooleano("¿Peligroso? (s/n): ");
+                    boolean protegido = leerBooleano("¿Protegido? (s/n): ");
+                    boolean liberado = leerBooleano("¿Ya liberado? (s/n): ");
+                    refugio.agregarAnimal(new AnimalSalvaje(nextId++, nombre, especie, edad, peso, habitat, peligroso, protegido, liberado));
+                    System.out.println("Animal añadido con ID " + (nextId - 1));
+                }
+                case 5 -> {
+                    int id = leerEntero("ID del animal a eliminar: ");
+                    Animal a = refugio.buscarAnimalPorID(id);
+                    if (a != null) {
+                        refugio.eliminarAnimal(id);
+                        System.out.println("Animal eliminado.");
+                    } else {
+                        System.out.println("No encontrado.");
+                    }
+                }
+                case 0 -> {}
+                default -> System.out.println("Opcion no valida.");
+            }
+        } while (op != 0);
+    }
 
-        //Donaciones
-        Donacion donacionJuan = new Donacion(
-                juan.getNombre(), // nombre del donante
-                50.0, // cantidad
-                LocalDate.now(), // fecha
-                "Dinero" // tipo
-        );
+    // ── ADOPTANTES 
+    static void menuAdoptantes() {
+        int op;
+        do {
+            System.out.println("\n-- ADOPTANTES --");
+            System.out.println("1. Ver adoptantes");
+            System.out.println("2. Registrar adoptante");
+            System.out.println("3. Adoptar un animal");
+            System.out.println("0. Volver");
+            op = leerEntero("Opcion: ");
 
-        Donacion donacionMaria = new Donacion(
-                maria.getNombre(), // nombre del donante
-                300.0, // cantidad
-                LocalDate.now(), // fecha
-                "Medicamentos" // tipo
-        );
-        //Registramos las donaciones en el refugio
-        refugio.registrarDonacion(donacionJuan);                
-        refugio.registrarDonacion(donacionMaria);
+            switch (op) {
+                case 1 -> {
+                    if (refugio.adoptantes.isEmpty()) {
+                        System.out.println("No hay adoptantes registrados.");
+                    } else {
+                        for (var p : refugio.adoptantes) {
+                            if (p instanceof Adoptante) System.out.println(p);
+                        }
+                    }
+                }
+                case 2 -> {
+                    String nombre = leerTexto("Nombre: ");
+                    String dni = leerTexto("DNI: ");
+                    String telefono = leerTexto("Telefono: ");
+                    refugio.adoptantes.add(new Adoptante(nombre, dni, telefono));
+                    System.out.println("Adoptante registrado.");
+                }
+                case 3 -> {
+                    var adoptantes = refugio.adoptantes.stream()
+                            .filter(p -> p instanceof Adoptante)
+                            .map(p -> (Adoptante) p)
+                            .toList();
 
-        // Ver animales
-        System.out.println("Animales agregados al refugio: ");
+                    if (adoptantes.isEmpty()) {
+                        System.out.println("No hay adoptantes. Registra uno primero.");
+                        break;
+                    }
+                    System.out.println("Adoptantes:");
+                    for (int i = 0; i < adoptantes.size(); i++) {
+                        System.out.println((i + 1) + ". " + adoptantes.get(i).getNombre());
+                    }
+                    int idx = leerEntero("Selecciona adoptante (numero): ") - 1;
+                    if (idx < 0 || idx >= adoptantes.size()) {
+                        System.out.println("Seleccion no valida.");
+                        break;
+                    }
 
-        System.out.println("");
+                    System.out.println("Animales disponibles para adopcion:");
+                    boolean hay = false;
+                    for (Animal a : refugio.animales) {
+                        if (a instanceof AnimalDomestico ad && !ad.isAdoptado()) {
+                            System.out.println("  ID " + a.getId() + ": " + a.getNombre() + " (" + a.getEspecie() + ")");
+                            hay = true;
+                        }
+                    }
+                    if (!hay) { System.out.println("No hay animales disponibles."); break; }
 
-        // Mostrar información del refugio y del adoptante
-        refugio.listarAnimales();
+                    int idAnimal = leerEntero("ID del animal: ");
+                    Animal animal = refugio.buscarAnimalPorID(idAnimal);
 
-        System.out.println("");
-        System.out.println("Adoptantes: ");
-        System.out.println("");
+                    if (animal == null || !(animal instanceof AnimalDomestico)) {
+                        System.out.println("Animal no valido.");
+                    } else if (((AnimalDomestico) animal).isAdoptado()) {
+                        System.out.println("Ese animal ya fue adoptado.");
+                    } else {
+                        adoptantes.get(idx).adoptarAnimal(animal);
+                        System.out.println(adoptantes.get(idx).getNombre() + " ha adoptado a " + animal.getNombre() + "!");
+                    }
+                }
+                case 0 -> {}
+                default -> System.out.println("Opcion no valida.");
+            }
+        } while (op != 0);
+    }
 
-        System.out.println(juan.toString());
-        System.out.println(andrea.toString());
+    // ── DONACIONES 
+    static void menuDonaciones() {
+        int op;
+        do {
+            System.out.println("\n-- DONACIONES --");
+            System.out.println("1. Ver donaciones");
+            System.out.println("2. Registrar donacion");
+            System.out.println("3. Ver total recaudado");
+            System.out.println("0. Volver");
+            op = leerEntero("Opcion: ");
 
-        //Ver donaciones(De donaciones)
-        System.out.println("");
-        System.out.println("Donaciones registradas: ");
-        System.out.println(donacionJuan.toString());
-        System.out.println(donacionMaria.toString());
-        //Total donaciones(Refugio)
-        System.out.println("");
-        System.out.println("Total donaciones: " + refugio.calcularTotalDonaciones());
+            switch (op) {
+                case 1 -> {
+                    if (refugio.donaciones.isEmpty()) {
+                        System.out.println("No hay donaciones registradas.");
+                    } else {
+                        for (Donacion d : refugio.donaciones) System.out.println(d);
+                    }
+                }
+                case 2 -> {
+                    String donante = leerTexto("Nombre del donante: ");
+                    double cantidad = leerDecimal("Cantidad: ");
+                    String tipo = leerTexto("Tipo (Dinero/Comida/Medicamentos/Otro): ");
+                    refugio.registrarDonacion(new Donacion(donante, cantidad, LocalDate.now(), tipo));
+                    System.out.println("Donacion registrada.");
+                }
+                case 3 -> System.out.println("Total recaudado: " + refugio.calcularTotalDonaciones() + " euros");
+                case 0 -> {}
+                default -> System.out.println("Opcion no valida.");
+            }
+        } while (op != 0);
+    }
+
+    // ── EMPLEADOS 
+    static void menuEmpleados() {
+        int op;
+        do {
+            System.out.println("\n-- EMPLEADOS --");
+            System.out.println("1. Ver empleados");
+            System.out.println("2. Registrar empleado");
+            System.out.println("0. Volver");
+            op = leerEntero("Opcion: ");
+
+            switch (op) {
+                case 1 -> {
+                    boolean hay = false;
+                    for (var p : refugio.adoptantes) {
+                        if (p instanceof Empleado e) { System.out.println(e); hay = true; }
+                    }
+                    if (!hay) System.out.println("No hay empleados registrados.");
+                }
+                case 2 -> {
+                    String nombre = leerTexto("Nombre: ");
+                    String dni = leerTexto("DNI: ");
+                    String telefono = leerTexto("Telefono: ");
+                    int idEmp = leerEntero("ID empleado: ");
+                    String tipo = leerTexto("Tipo (Veterinario/Cuidador/Administrativo): ");
+                    String cargo = leerTexto("Animales a cargo (Domesticos/Salvajes/Ambos): ");
+                    refugio.adoptantes.add(new Empleado(nombre, dni, telefono, idEmp, tipo, cargo));
+                    System.out.println("Empleado registrado.");
+                }
+                case 0 -> {}
+                default -> System.out.println("Opcion no valida.");
+            }
+        } while (op != 0);
+    }
+
+    // ── UTILIDADES 
+    static int leerEntero(String msg) {
+        while (true) {
+            System.out.print(msg);
+            try { return Integer.parseInt(scanner.nextLine().trim()); }
+            catch (NumberFormatException e) { System.out.println("Introduce un numero entero."); }
+        }
+    }
+
+    static double leerDecimal(String msg) {
+        while (true) {
+            System.out.print(msg);
+            try { return Double.parseDouble(scanner.nextLine().trim().replace(",", ".")); }
+            catch (NumberFormatException e) { System.out.println("Introduce un numero valido."); }
+        }
+    }
+
+    static String leerTexto(String msg) {
+        System.out.print(msg);
+        return scanner.nextLine().trim();
+    }
+
+    static boolean leerBooleano(String msg) {
+        while (true) {
+            System.out.print(msg);
+            String r = scanner.nextLine().trim().toLowerCase();
+            if (r.equals("s")) return true;
+            if (r.equals("n")) return false;
+            System.out.println("Escribe s o n.");
+        }
     }
 }
