@@ -16,7 +16,7 @@ public class App {
     static Scanner scanner = new Scanner(System.in);
     static Refugio refugio = new Refugio("Libertad", "Calle Desengaño 21");
     // ID para animales
-    static int nextId = 1; 
+    static int nextId = 1;
 
     public static void main(String[] args) {
 
@@ -28,15 +28,27 @@ public class App {
             System.out.println("3. Donaciones");
             System.out.println("4. Empleados");
             System.out.println("5. Salir");
+            System.out.println("6. Importar CSV");
+            System.out.println("7. Exportar CSV");
             opcion = leerEntero("Opcion: ");
 
             switch (opcion) {
-                case 1 -> menuAnimales();
-                case 2 -> menuAdoptantes();
-                case 3 -> menuDonaciones();
-                case 4 -> menuEmpleados();
-                case 5 -> System.out.println("Hasta pronto!");
-                default -> System.out.println("Opcion no valida.");
+                case 1 ->
+                    menuAnimales();
+                case 2 ->
+                    menuAdoptantes();
+                case 3 ->
+                    menuDonaciones();
+                case 4 ->
+                    menuEmpleados();
+                case 6 ->
+                    importarCSVConsola();
+                case 7 ->
+                    exportarCSVConsola();
+                case 5 ->
+                    System.out.println("Hasta pronto!");
+                default ->
+                    System.out.println("Opcion no valida.");
             }
 
         } while (opcion != 5);
@@ -104,8 +116,10 @@ public class App {
                         System.out.println("No encontrado.");
                     }
                 }
-                case 0 -> {}
-                default -> System.out.println("Opcion no valida.");
+                case 0 -> {
+                }
+                default ->
+                    System.out.println("Opcion no valida.");
             }
         } while (op != 0);
     }
@@ -127,7 +141,9 @@ public class App {
                         System.out.println("No hay adoptantes registrados.");
                     } else {
                         for (var p : refugio.adoptantes) {
-                            if (p instanceof Adoptante) System.out.println(p);
+                            if (p instanceof Adoptante) {
+                                System.out.println(p);
+                            }
                         }
                     }
                 }
@@ -166,7 +182,10 @@ public class App {
                             hay = true;
                         }
                     }
-                    if (!hay) { System.out.println("No hay animales disponibles."); break; }
+                    if (!hay) {
+                        System.out.println("No hay animales disponibles.");
+                        break;
+                    }
 
                     int idAnimal = leerEntero("ID del animal: ");
                     Animal animal = refugio.buscarAnimalPorID(idAnimal);
@@ -180,8 +199,10 @@ public class App {
                         System.out.println(adoptantes.get(idx).getNombre() + " ha adoptado a " + animal.getNombre() + "!");
                     }
                 }
-                case 0 -> {}
-                default -> System.out.println("Opcion no valida.");
+                case 0 -> {
+                }
+                default ->
+                    System.out.println("Opcion no valida.");
             }
         } while (op != 0);
     }
@@ -202,7 +223,9 @@ public class App {
                     if (refugio.donaciones.isEmpty()) {
                         System.out.println("No hay donaciones registradas.");
                     } else {
-                        for (Donacion d : refugio.donaciones) System.out.println(d);
+                        for (Donacion d : refugio.donaciones) {
+                            System.out.println(d);
+                        }
                     }
                 }
                 case 2 -> {
@@ -212,9 +235,12 @@ public class App {
                     refugio.registrarDonacion(new Donacion(donante, cantidad, LocalDate.now(), tipo));
                     System.out.println("Donacion registrada.");
                 }
-                case 3 -> System.out.println("Total recaudado: " + refugio.calcularTotalDonaciones() + " euros");
-                case 0 -> {}
-                default -> System.out.println("Opcion no valida.");
+                case 3 ->
+                    System.out.println("Total recaudado: " + refugio.calcularTotalDonaciones() + " euros");
+                case 0 -> {
+                }
+                default ->
+                    System.out.println("Opcion no valida.");
             }
         } while (op != 0);
     }
@@ -233,9 +259,14 @@ public class App {
                 case 1 -> {
                     boolean hay = false;
                     for (var p : refugio.adoptantes) {
-                        if (p instanceof Empleado e) { System.out.println(e); hay = true; }
+                        if (p instanceof Empleado e) {
+                            System.out.println(e);
+                            hay = true;
+                        }
                     }
-                    if (!hay) System.out.println("No hay empleados registrados.");
+                    if (!hay) {
+                        System.out.println("No hay empleados registrados.");
+                    }
                 }
                 case 2 -> {
                     String nombre = leerTexto("Nombre: ");
@@ -247,8 +278,10 @@ public class App {
                     refugio.adoptantes.add(new Empleado(nombre, dni, telefono, idEmp, tipo, cargo));
                     System.out.println("Empleado registrado.");
                 }
-                case 0 -> {}
-                default -> System.out.println("Opcion no valida.");
+                case 0 -> {
+                }
+                default ->
+                    System.out.println("Opcion no valida.");
             }
         } while (op != 0);
     }
@@ -257,16 +290,22 @@ public class App {
     static int leerEntero(String msg) {
         while (true) {
             System.out.print(msg);
-            try { return Integer.parseInt(scanner.nextLine().trim()); }
-            catch (NumberFormatException e) { System.out.println("Introduce un numero entero."); }
+            try {
+                return Integer.parseInt(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Introduce un numero entero.");
+            }
         }
     }
 
     static double leerDecimal(String msg) {
         while (true) {
             System.out.print(msg);
-            try { return Double.parseDouble(scanner.nextLine().trim().replace(",", ".")); }
-            catch (NumberFormatException e) { System.out.println("Introduce un numero valido."); }
+            try {
+                return Double.parseDouble(scanner.nextLine().trim().replace(",", "."));
+            } catch (NumberFormatException e) {
+                System.out.println("Introduce un numero valido.");
+            }
         }
     }
 
@@ -279,9 +318,28 @@ public class App {
         while (true) {
             System.out.print(msg);
             String r = scanner.nextLine().trim().toLowerCase();
-            if (r.equals("s")) return true;
-            if (r.equals("n")) return false;
+            if (r.equals("s")) {
+                return true;
+            }
+            if (r.equals("n")) {
+                return false;
+            }
             System.out.println("Escribe s o n.");
         }
     }
+
+    // ── IMPORTAR CSV DESDE CONSOLA ───────────────────────────────
+    static void importarCSVConsola() {
+        String ruta = leerTexto("Carpeta que contiene los CSV: ");
+        String resultado = refugio.impCSV(java.nio.file.Path.of(ruta));
+        System.out.println(resultado);
+    }
+
+    // ── EXPORTAR CSV DESDE CONSOLA ───────────────────────────────
+    static void exportarCSVConsola() {
+        String ruta = leerTexto("Carpeta donde guardar los CSV: ");
+        String resultado = refugio.expCSV(java.nio.file.Path.of(ruta));
+        System.out.println(resultado);
+    }
+
 }

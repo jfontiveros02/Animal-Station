@@ -3,10 +3,11 @@ package com.aj.refugio.model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+
 // Esta clase representa una donación hecha al refugio.
 // Puede ser dinero, comida, medicinas, etc.
 // También guarda un historial de cantidades si quieres registrar varias donaciones del mismo donante.
-public class Donacion implements Exportable {
+public class Donacion  {
 
     // Nombre de la persona que dona
     private String donante;
@@ -72,7 +73,7 @@ public class Donacion implements Exportable {
         return this.tipo;
     }
 
-    // Representación en texto de la donación
+    /*  Representación en texto de la donación
     @Override
     public String toString() {
         return "Donante: " + donante +
@@ -89,9 +90,9 @@ public class Donacion implements Exportable {
                ",\"cantidad\":" + cantidad +
                ",\"tipo\":\"" + tipo + "\"" +
                ",\"fecha\":\"" + fecha + "\"}";
-    }
+    }*/
 
-    @Override
+   
     public String toCSV() {
         return donante + "," + cantidad + "," + tipo + "," + fecha;
     }

@@ -1,6 +1,8 @@
 package com.aj.refugio.model;
 
-public abstract class Animal implements Exportable {
+
+
+public abstract class Animal {
     //Variables principales
     private int id;
     private String nombre;
